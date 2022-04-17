@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/bootstrap.css') }}'>
+    <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/style.css') }}'>
+    <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/avistyle.css') }}'>
+    <script src="{{url_for('static', filename='/src/script.js')}}"></script>
+    <title>This is Dojo Aviation</title>
+</head>
+<body>
+    <div class="aviation-header">
+        <form action="/search.html">
+            <label for="Search">What are you looking for?</label>
+            <input type="text" name="Search" id="Search">
+            <form action=""></form><button type="submit"name="startSearch" action="/search.html" class="btn-success">Search</button>
+        </form>
+        <form action="account.html"></form><button class="btn-success" type="submit" name="Account">Create an Account</button>
+        <form action="dashboard.html"></form><button class="btn-success" type="submit" name="Dashboard">Dashboard</button>
+        <form action="airport_finder.html"><button class="btn-success" type="submit" name="Airport">Airport Finder</button></form>
+    </div>
+    <h1>Welcom to Dojo Aviation!</h1>
+    <p><b class="disclaimer">Disclaimer: </b>Dojo Aviation is intended to provide general aviation information.  All resources offered on Dojo Aviation 
+        are offered without warranty.  Always consult a professional before making any flight plans.</p>
+    <br><br>
+
+</body>
+</html>

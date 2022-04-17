@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/bootstrap.css') }}'>
+    <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/style.css') }}'>
+    <title>Writer's Workshop</title>
+</head>
+<body>
+    <div class="workshop-header">
+        <h1 class="h1-workshop">Welcome Back {{session['firstname']}}!</h1>
+        <div class="workshop-header-btns">
+            <form action="/genre/new"><button type="submit" class="btn-warning btn-workshop">Create a New Genre</button></form>
+            <form action="/group/new"><button type="submit" class="btn-primary btn-workshop">Create a New Group</button></form>
+            <form action="/logout"><button type="submit" class="btn-primary btn-workshop">Logout</button></form>
+        </div>
+    </div>
+    <br>
+    <h2 class="h2-workshop">Available Groups</h2>
+    <br>
+    <div class="workshop-list">
+        {% for group in groups %}
+            <p><a href="/group/{{group.id}}">{{group.name}}</a> founded {{group.founding_date}} by {{group.creator.first_name}} {{group.creator.last_name}}  {{group.member_count}} members</p>
+        {% endfor %}
+    </div>
+    <br>
+    <h2 class="h2-workshop">Available Genres</h2>
+    <br>
+    <div class="workshop-list">
+        {% for genre in genres %}
+            <p>{{genre.name}} -- {{genre.short_description}}</p>
+        {% endfor %}
+    </div>
+    <br>
+    <h2 class="h2-workshop">Your Submissions</h2>
+    <br>
+    <div class="workshop-list">
+        {% for submission in submissions %}
+            <p><a href="/submit/review/{{submission.id}}">{{submission.title}}</a>     {{submission.review_count}} Reviews</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/bootstrap.css') }}'>
+    <link rel='stylesheet' type='text/css' href='{{ url_for('static', filename='/css/style.css') }}'>
+    <title>Login</title>
+</head>
+<body>
+    <h1 class="h1-login">User Login</h1>
+    <div class="div-login">
+        <h2 class="h2-login">Login</h2>
+        {% with messages = get_flashed_messages() %}    <!-- declare a variable called messages -->
+            {% if messages %}                           <!-- check if there are any messages -->
+                {% for message in messages %}           <!-- loop through the messages -->
+                    <p class="email-message">{{message}}</p>                  <!-- display each message in a paragraph tag -->
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form action="/user_login" method="post" class="register-form">
+            <label for="email" class="lbl-register">Email: </label>
+            <input type="text" name="email" id="email" class="input-login-data">
+            <label for="password" class="lbl-register">Password: </label>
+            <input type="text" name="password" id="password" class="input-login-data">
+            <button type="submit" id="Login" class="btn btn-success btn-login">Login</button>
+        </form>
+    </div>
+</body>
+</html>
