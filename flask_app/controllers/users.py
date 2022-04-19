@@ -1,12 +1,14 @@
 from flask import session, render_template, request, redirect, flash
 from flask_app import app
 from flask_bcrypt import Bcrypt
+from flask_app.models import State
 
 bcrypt = Bcrypt(app)
 
 @app.route('/')
 def registration():
-    return render_template("index.html")
+    return redirect('/dashboard')
+    #return render_template("index.html")
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -45,10 +47,15 @@ def login():
 
 @app.route('/dashboard')
 def home():
+    # whr 04/19/2022 - skipping the login stuff right now
+    session['User_id'] = 1
+    session['firstname'] = 'William'
+    session['lastname'] = 'Rohde'
+
     data = {
         'id': session['User_id']
     }
-    return render_template('dashboard.html')
+    return render_template('dashboard.html',states = State.state.get_all())
 
 @app.route('/logout')
 def logout():

@@ -39,6 +39,24 @@ class MySQLConnection:
             finally:
                 # close the connection
                 self.connection.close() 
+
+    def call_proc(self, procName, data=None):
+        # whr 04/19/2022 - i wrote this, no one else to blame
+        with self.connection.cursor() as cursor:
+            try:
+                print(f"trying to call procedure {procName}")
+                cursor.callproc(procName, data)
+
+                for result in cursor.stored_results():
+                    print(result.fetchall())
+
+                # need to return whatever the stored proc sent back
+                return result
+            except Exception as e:
+                print("Something went wrong in call_proc",e)
+            finally:
+                self.connection.close()
+
 # connectToMySQL receives the database we're using and uses it to create an instance of MySQLConnection
 def connectToMySQL(db):
     return MySQLConnection(db)

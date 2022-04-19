@@ -1,4 +1,4 @@
-from flask_app.config.mySQLConnection import MySQLConnection, connectToMySQL
+from flask_app.config.mysqlconnection import MySQLConnection, connectToMySQL
 from flask import flash
 from flask_app import app
 from flask_bcrypt import Bcrypt
@@ -8,59 +8,52 @@ bcrypt = Bcrypt(app)
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 NAME_REGEX = re.compile(r'^[a-zA-Z]{3,}$')
 PASSWORD_REGEX = re.compile(r'^[a-zA-Z0-9#%&!@]{8,}$')
-dbName = "workshop_schema"
+dbName = "airlineapi_schema"
 
-class Author:
+class user:
     def __init__(self,data):
         self.id = data['id']
+        self.airman_number = data['airmanNumber']
         self.email = data['email']
+        self.username = data['username']
         self.first_name = data['firstname']
         self.last_name = data['lastname']
         self.password = data['password']
         self.created_at = data['created_at']
         self.update_at = data['updated_at']
+        self.address_id = data['address_id']
+        self.address = None
 
     @classmethod
     def save(cls,data):
-        query = "INSERT INTO Authors (email, firstname, lastname, password) VALUES (%(email)s, %(firstname)s, %(lastname)s, %(password)s);"
+        query = "INSERT INTO users (airmanNumber, email, username, firstname, lastname, password) "\
+                "VALUES (%(email)s, %(firstname)s, %(lastname)s, %(password)s);"
         return MySQLConnection(dbName).query_db( query, data )
 
     @classmethod
     def login(cls,data):
-        query = "SELECT * FROM Authors WHERE email = %(email)s;"
+        query = "SELECT * FROM users WHERE email = %(email)s;"
         return MySQLConnection(dbName).query_db( query, data )
 
     @classmethod
-    def get_Author_by_email(cls,data):
-        query = "SELECT * FROM Authors WHERE email = %(email)s;"
+    def get_user_by_email(cls,data):
+        query = "SELECT * FROM users WHERE email = %(email)s;"
         result = MySQLConnection(dbName).query_db( query, data )
         print(result)
         if len(result) <= 0:
-            print('get_Author_by_email Returned False')
+            print('get_user_by_email Returned False')
             return False
         return cls(result[0])
 
     @classmethod
-    def get_Author_by_id(cls,data):
-        query = "SELECT * FROM Authors WHERE id = %(Author_id)s;"
-        print(f"get_Author_by_id query = {query}")
+    def get_user_by_id(cls,data):
+        query = "SELECT * FROM users WHERE id = %(user_id)s;"
+        print(f"get_user_by_id query = {query}")
         result = MySQLConnection(dbName).query_db( query, data )
         if len(result) <= 0:
-            print('get_Author_by_id Returned False')
+            print('get_user_by_id Returned False')
             return False
         return cls(result[0])
-
-    @classmethod
-    def get_group_members(cls,data):
-        query = "SELECT Authors.* FROM Authors LEFT JOIN GroupMembers "\
-                "ON authors.id = GroupMembers.author_id LEFT JOIN WritingGroups ON GroupMembers.Group_id = "\
-                "WritingGroups.id WHERE WritingGroups.id = %(id)s;"
-        members = []
-        results = MySQLConnection(dbName).query_db( query, data )
-        for result in results:
-            members.append(cls(result))
-        return members
-
 
     @staticmethod
     def validate(data):
@@ -82,9 +75,9 @@ class Author:
         if (data['password']!=data['confirm-password']):
             flash("Password entries do not match!","register")
             is_valid = False
-        results = Author.get_Author_by_email(data)
+        results = user.get_user_by_email(data)
         if results != False:
-            flash(f"Author email {data['email']} already exists in database!","register")
+            flash(f"user email {data['email']} already exists in database!","register")
             is_valid = False
         return is_valid
 
